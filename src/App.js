@@ -2,6 +2,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Main from "./Component/Main";
 import CreateMatch from "./Component/CreateMatch";
 import Ball from "./Component/Ball"
+import ScoreBoard from "./Component/ScoreBoard"
 function App() {
   return (
     <>
@@ -10,6 +11,7 @@ function App() {
           <Route exact path="/" component={Main} />
           <Route exact path="/createMatch" component={CreateMatch} />
            <Route exact path="/ball" component={Ball} />
+             <Route exact path="/scoreboard" component={ScoreBoard} />
         </Switch>
       </BrowserRouter>
     </>

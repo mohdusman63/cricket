@@ -3,13 +3,14 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-
+import ScoreBoard from './ScoreBoard'
+import { Link } from "react-router-dom";
 function CreateMatch(props) {
   const [team_name1, setTeam] = useState("");
   const [team_name2, setTeam2] = useState("");
   const [list, setList] = useState([]);
   const [photo, SetFileName] = useState("");
-  const [team_id, setTeamId] = useState('');
+  const [team_id, setTeamId] = useState("");
   const [role, setRole] = useState("");
   const [player_name, setPlayerName] = useState("");
 
@@ -127,6 +128,8 @@ function CreateMatch(props) {
 
   return (
     <div className="col-md-6 mt-3 mx-auto">
+     {/* // <ScoreBoard value={list}/> */}
+       <Link to={"/scoreboard"}>Go to the ScoreBoard </Link>
       <Card className="text-center">
         <Card.Header className="bg-primary">Create Team </Card.Header>
         <Card.Body>
