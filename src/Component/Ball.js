@@ -4,6 +4,7 @@ const Ball = () => {
   let [score, setScore] = useState(0);
   let [ball, setBall] = useState(6);
   let [lastClicked, setLastClicked] = useState([]);
+  
 
   const clickHandler = (e) => {
     if (ball === 0) {
