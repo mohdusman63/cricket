@@ -8,9 +8,9 @@ function ScoreBoard(props) {
   const [team2, setTeam2] = useState([]);
   const [list1, setList1] = useState([]);
   const [list2, setList2] = useState([]);
-  const [batsman, setBatsman] = useState([]);    //slected batsman in selecthandler
+  let [batsman, setBatsman] = useState([]);    //slected batsman in selecthandler
   const [over, setOver] = useState(0);          //total no of over limit
-  const [bowler, setBowler] = useState();
+  let  [bowler, setBowler] = useState();
   const [count, setCount] = useState(0);
   let [balltracker1, setBallTracker1] = useState(0);  //total run for batsman1
   let [balltracker2, setBallTracker2] = useState(0);//total run for batsman2
@@ -174,13 +174,20 @@ function ScoreBoard(props) {
        return
      }
 
-    if (Math.floor(totalBall / 6) === over && ball===0) {
+    if (Math.floor(totalBall / 6) === Math.floor(over/2) && ball===0) {
       alert("over reached the maximum swapping the player ... ");
        let rev=id.reverse()
         //console.log(rev[0])
         getList(rev[0])
         getList2(rev[1])
-        setBatsman([])
+        batsman1=''
+         setBatsman1(batsman1)
+        setBatsman2(batsman1)
+         batsman=[]
+         setBatsman(batsman)
+        setBowler()
+        setScore('')
+        setOver('')
         //reset the all previous details
 
       return false;
@@ -188,11 +195,6 @@ function ScoreBoard(props) {
 
     if (ball === 0) {
       alert("Over is ended");
-       alert(id)
-       console.log(id)
-
-
-      console.log(ball);
       ball = 6;
       setBall(ball);
       setLastClicked([]);
