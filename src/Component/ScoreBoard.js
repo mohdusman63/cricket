@@ -26,7 +26,8 @@ function ScoreBoard(props) {
   let [redoCount, setRedoCount] = useState(0);
   let [countBall1,setCountBall1]=useState(0)        //count the frequncy of ball player1
   let [countBall2,setCountBall2]=useState(0)          //count the frequncy of ball player1
-  let [id,setTeamId]=useState([])
+  let [id,setTeamId]=useState([])        //store the playerid
+
 
   //ball state
   let [score, setScore] = useState(0);
@@ -180,7 +181,7 @@ function ScoreBoard(props) {
         getList(rev[0])
         getList2(rev[1])
         setBatsman([])
-
+        //reset the all previous details
 
       return false;
     }
@@ -300,6 +301,9 @@ function ScoreBoard(props) {
     setScore(score + 1);
   };
   const outHandler = () => {
+    if(ball===0){
+    return false
+    }
     // console.log(strike)
     if (strike === "strike") {
       // console.log(batsman1)
@@ -307,11 +311,13 @@ function ScoreBoard(props) {
       batsman.shift();
       console.log(batsman.length);
       setBatsman1("out");
+      setBall(ball-1)
     } else {
       console.log("=====>" + nonstrike);
       batsman.splice(1, 1);
       console.log(batsman2);
       setBatsman2("out");
+       setBall(ball-1)
     }
   };
 
@@ -411,6 +417,22 @@ function ScoreBoard(props) {
               </tr>
             </tbody>
           </Table>
+        </div>
+        <div>
+           <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Bowler Name</th>
+                <th>ball</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>{bowler}</td>
+                  <td>{6-ball}</td>
+                </tr>
+                </tbody>
+                </Table>
         </div>
 
         {/* //ball layout */}
