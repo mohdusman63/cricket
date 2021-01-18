@@ -10,13 +10,13 @@ function ScoreBoard(props) {
   const [list2, setList2] = useState([]);
   let [batsman, setBatsman] = useState([]);    //slected batsman in selecthandler
   const [over, setOver] = useState(0);          //total no of over limit
-  let  [bowler, setBowler] = useState();
+  let  [bowler, setBowler] = useState('');
   const [count, setCount] = useState(0);
   let [balltracker1, setBallTracker1] = useState(0);  //total run for batsman1
   let [balltracker2, setBallTracker2] = useState(0);//total run for batsman2
   const [strike, setStrike] = useState("strike");
   const [nonstrike, setNonStrike] = useState("");
-  let [totalBall, setTotalBall] = useState(0);  //count the total ball
+  let [totalBall, setTotalBall] = useState(0);  //count the total ball of inning
   let [four1, setFour1] = useState(0);          //count four for batsman1
   let [six1, setSix1] = useState(0);          //count six for batsman1
   let [four2, setFour2] = useState(0);         //count four for batsman2
@@ -27,6 +27,7 @@ function ScoreBoard(props) {
   let [countBall1,setCountBall1]=useState(0)        //count the frequncy of ball player1
   let [countBall2,setCountBall2]=useState(0)          //count the frequncy of ball player1
   let [id,setTeamId]=useState([])        //store the playerid
+  let [matchBall,setmatchBall]=useState(0)  //count the baal of whole innning
 
 
   //ball state
@@ -148,9 +149,21 @@ function ScoreBoard(props) {
   };
 
   const startMatch = () => {
-    alert("hii");
+      let l = batsman.length;
+     if(l<2){
+       alert('plz add two batsman on strike')
+       return
+     }
     setBatsman1(batsman[0]);
     setBatsman2(batsman[1]);
+    if(bowler===''){
+      alert('plz select bowlwer')
+      return
+    }
+    if(over===0 || over===''){
+      alert('plaz select over')
+      return
+    }
   };
   //over handle
 
@@ -173,9 +186,13 @@ function ScoreBoard(props) {
        alert('plz add two batsman on strike')
        return
      }
+       if(over*6===matchBall){
+          alert("match is ended  ... ");
+          return false
 
-    if (Math.floor(totalBall / 6) === Math.floor(over/2) && ball===0) {
-      alert("over reached the maximum swapping the player ... ");
+       }
+    if (Math.floor(totalBall / 6) === Math.floor(over/2) ) {
+      alert("first inning is over ...swapping the player ... ");
        let rev=id.reverse()
         //console.log(rev[0])
         getList(rev[0])
@@ -185,9 +202,28 @@ function ScoreBoard(props) {
         setBatsman2(batsman1)
          batsman=[]
          setBatsman(batsman)
-        setBowler()
-        setScore('')
-        setOver('')
+         setBowler('')
+        setScore(0)
+
+        four1=0
+        setFour1(four1)
+        four2=0
+        setFour2(four2)
+        six1=0
+        setSix1(six1)
+        six2=0
+        setSix2(six2)
+        balltracker1=0
+        setBallTracker1(balltracker1)
+        balltracker2=0
+        setBallTracker2(balltracker2)
+        countBall1=0
+        setCountBall1(countBall1)
+        countBall2=0;
+        setCountBall2(countBall2)
+
+        totalBall=0
+        setTotalBall(totalBall)
         //reset the all previous details
 
       return false;
@@ -201,6 +237,8 @@ function ScoreBoard(props) {
       return;
     }
     totalBall++;
+    matchBall++
+    setmatchBall(matchBall)
     setTotalBall(totalBall);
     ball--;
     let value = parseInt(e.target.value);
@@ -306,6 +344,15 @@ function ScoreBoard(props) {
     if(ball===0){
     return false
     }
+     let l = batsman.length;
+     if(l<2){
+       alert('plz add two batsman on strike')
+       return
+     }
+       if(bowler===''){
+      alert('plz select bowlwer')
+      return
+    }
     // console.log(strike)
     if (strike === "strike") {
       // console.log(batsman1)
@@ -348,7 +395,7 @@ function ScoreBoard(props) {
           <div className="row m-3">
             <select multiple={true} className="m-2" onChange={multiSelect}>
               {" "}
-              <option>Player Name</option>
+              <option disabled >Player Name</option>
               {list1.map((element, index) => (
                 <option key={index} value={element.name} name={element._id}>
                   {element.name}
@@ -361,7 +408,7 @@ function ScoreBoard(props) {
               className="m-2"
               onChange={multiSelectBowler}
             >
-              <option>Player Name</option>
+              <option value="" disabled>Player Name</option>
               {list2.map((element, index) => (
                 <option key={index} value={element.name} name={element._id}>
                   {element.name}
@@ -370,10 +417,11 @@ function ScoreBoard(props) {
             </select>
             <h6 className="m-5">total over</h6>
             <select className="" onChange={overHandler}>
-              <option>5</option>
-              <option>10</option>
-              <option>15</option>
-              <option>20</option>
+              <option value="" >Selct Over</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
             </select>
           </div>
         </div>
@@ -440,8 +488,10 @@ function ScoreBoard(props) {
         {/* //ball layout */}
         <div className="mt-3">
           <div className="col-md-5 mt-3 mx-auto">
-            <h5>total ball is ..{totalBall}</h5>
-            <h5>total over is ..{Math.floor(totalBall / 6)}</h5>
+            <h5>innnig ball is ..{totalBall}</h5>
+            <h5>innng over is ..{Math.floor(totalBall / 6)}</h5>
+            <h5>total Match ball is {matchBall}</h5>
+            <h5>total Match over is  is {Math.floor(matchBall/6)}</h5>
             <div className="input-group mb-3">
               <input
                 type="text"
