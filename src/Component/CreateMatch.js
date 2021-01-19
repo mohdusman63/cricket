@@ -146,8 +146,8 @@ function CreateMatch(props) {
               Create Team
             </Button>
             <br />
-            <Form.Label className="mt-3">Enter Team Name 2</Form.Label>
-            <Form.Control
+            {/* <Form.Label className="mt-3">Enter Team Name 2</Form.Label> */}
+            {/* <Form.Control
               type="text"
               placeholder="Enter Team Name 2"
               value={team_name2}
@@ -156,7 +156,7 @@ function CreateMatch(props) {
             <br />
             <Button variant="primary" onClick={() => handleSubmit2()}>
               Create Team
-            </Button>
+            </Button> */}
           </Form>
         </Card.Body>
       </Card>
