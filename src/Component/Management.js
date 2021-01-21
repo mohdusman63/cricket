@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MultiSelect from "react-multi-select-component";
+import Form from "react-bootstrap/Form";
 
 function Management(props) {
   let [teamList, setTeamList] = useState([]); //add list of team
@@ -13,6 +14,7 @@ function Management(props) {
   let [teamValue2, setTeamValue2] = useState([]); //dropdown list of player team2
   const [selected, setSelected] = useState([]); //select the two batsman
   const [selected2, setSelected2] = useState([]); //select the bowler
+  const [cars, setCars] = useState([]); //select the bowler
   useEffect(() => {
     async function getTeam() {
       try {
@@ -55,6 +57,11 @@ function Management(props) {
 
   const checkBoxHandler = (e) => {
     console.log(" ==== ", e.target.checked);
+    if (!e.target.checked) {
+      console.log(playerList.pop());
+      // setPlayerList()
+      return;
+    }
     if (playerList.length > 1) {
       alert("you can perform match maximum two team ");
       return false;
@@ -88,6 +95,10 @@ function Management(props) {
   const handler = (e) => {
     console.log(e.target);
     console.log(e.target.name, e.target.value);
+  };
+  const selectHandler = (e) => {
+    alert(e.target.value);
+    console.log(e.target.name);
   };
 
   return (
@@ -147,36 +158,23 @@ function Management(props) {
           labelledBy={"Select"}
         />
       </div>
-      {/* listing of the player name */}
-      {/* <div className="row m-2">
-        <select className="m-2" multiple={true} onChange={handler}>
-          <option value="" disabled>
-            Player Name
-          </option>
-          {team1
-            ? team1.map((val, index) => (
-                <option key={index} value={val.player_id} name={val.name}>
-                  {val.name}{" "}
-                </option>
-              ))
-            : " "}
-        </select>
-        <select className="m-2" multiple={true} onChange={handler}>
-          <option disabled>Player Name</option>
-          {team2
-            ? team2.map((val, index) => (
-                <option
-                  key={index}
-                  name={val.name}
-                  value={val.player_id}
-                  id="5"
-                >
-                  {val.name}
-                </option>
-              ))
-            : " "}
-        </select>
-      </div> */}
+      <div>
+        <Form.Group controlId="exampleForm.ControlSelect2">
+          <Form.Label>Example multiple select</Form.Label>
+          <Form.Control
+            as="select"
+            multiple
+            name={cars}
+            onChange={selectHandler}
+          >
+            <option value="Sachin Tendulkar">Sachin Tendulkar</option>
+            <option value="Swami Vivekananda">Swami Vivekananda</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </Form.Control>
+        </Form.Group>
+      </div>
     </>
   );
 }

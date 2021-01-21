@@ -33,6 +33,7 @@ function ScoreBoard(props) {
   const [showButton, setShowButton] = useState(false);
   let [countBowlerFq, setBowlerFreq] = useState([]);
   let [reset, setReset] = useState(1); //swapping occur multiple times
+  let [ballerCounter, setBallerCounter] = useState([]);
 
   //ball state
   let [score, setScore] = useState(0);
@@ -177,8 +178,8 @@ function ScoreBoard(props) {
   };
   //handle the bowler name
   const multiSelectBowler = (e) => {
-    alert(e.target.value);
-    alert("hii");
+    // alert(e.target.value);
+    // alert("hii");
     setBowler(e.target.value);
     setBowlerFreq((pre) => {
       return [...pre, e.target.value];
@@ -189,6 +190,7 @@ function ScoreBoard(props) {
     //console.log(countBowlerFq)
     var result = {};
     var freq = {};
+    let pull = [];
     for (let i = 0; i < countBowlerFq.length; i++) {
       if (!freq[countBowlerFq[i]]) freq[countBowlerFq[i]] = 0;
       freq[countBowlerFq[i]]++;
@@ -196,11 +198,17 @@ function ScoreBoard(props) {
     for (let i = 0; i < countBowlerFq.length; i++) {
       if (freq[countBowlerFq[i]] > 0) {
         console.log(countBowlerFq[i], freq[countBowlerFq[i]]);
+        pull.push({
+          bowler_name: countBowlerFq[i],
+          times: freq[countBowlerFq[i]],
+        });
         result[countBowlerFq[i]] = freq[countBowlerFq[i]];
         freq[countBowlerFq[i]] = 0;
       }
     }
-    console.log(result);
+    console.log(pull);
+    // console.log(result["Joe Root"]);
+    setBallerCounter(pull);
   };
   //ball tracker
 
@@ -484,7 +492,7 @@ function ScoreBoard(props) {
               <option disabled>Player Name</option>
               {list1.map((element, index) => (
                 <option key={index} value={element.name} name={element._id}>
-                  {element.name}
+                  {element.name + " ====>    " + element.role}
                 </option>
               ))}
             </select>
@@ -499,7 +507,7 @@ function ScoreBoard(props) {
               </option>
               {list2.map((element, index) => (
                 <option key={index} value={element.name} name={element._id}>
-                  {element.name}
+                  {element.name + " ====>    " + element.role}
                 </option>
               ))}
             </select>
@@ -551,7 +559,7 @@ function ScoreBoard(props) {
                   <tr>
                     <td>
                       {batsman1}
-                      {"........."}
+                      {"-------"}
                       {strike}
                     </td>
                     <td>
@@ -563,7 +571,7 @@ function ScoreBoard(props) {
                   <tr>
                     <td>
                       {batsman2}
-                      {"........."}
+                      {"-------"}
                       {nonstrike}
                     </td>
                     <td>
@@ -592,6 +600,25 @@ function ScoreBoard(props) {
                 </tbody>
               </Table>
             </div>
+            <div>
+              {/* count bowler */}
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Bowler Name</th>
+                    <th>over</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ballerCounter.map((b, index) => (
+                    <tr key={index}>
+                      <td>{b.bowler_name}</td>
+                      <td>{b.times}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
 
             {/* //ball layout */}
             <div className="mt-3">
@@ -599,7 +626,10 @@ function ScoreBoard(props) {
                 <h5>innnig ball is ..{totalBall}</h5>
                 <h5>innng over is ..{Math.floor(totalBall / 6)}</h5>
                 <h5>total Match ball is {matchBall}</h5>
-                <h5>total Match over is is {Math.floor(matchBall / 6)}</h5>
+                <h5>
+                  total Match over is is{" "}
+                  {Math.floor(matchBall / 6) + "." + Math.floor(matchBall % 6)}
+                </h5>
                 <div className="input-group mb-3">
                   <input
                     type="text"
