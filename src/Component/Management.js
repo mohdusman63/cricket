@@ -44,8 +44,15 @@ function Management(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          setPlayerList((preValue) => {
-            return [...preValue, data.player_list];
+          console.log(data);
+          let p = [...playerList];
+          console.log(p);
+          let insertData = {
+            id: team_id,
+            playerList: data.player_list,
+          };
+          setPlayerList((prev) => {
+            return [...prev, insertData];
           });
         })
 
@@ -56,14 +63,18 @@ function Management(props) {
   }
 
   const checkBoxHandler = (e) => {
-    console.log(" ==== ", e.target.checked);
+    console.log(" ==== ", e.target.checked, e.target.value);
     if (!e.target.checked) {
-      console.log(playerList.pop());
-      // setPlayerList()
+      let update = playerList.filter((item) => item.id !== e.target.value);
+      console.log(update);
+      setPlayerList(update);
+
       return;
     }
     if (playerList.length > 1) {
       alert("you can perform match maximum two team ");
+      console.log(e.target.checked);
+      e.target.checked = false;
       return false;
     }
 
@@ -74,22 +85,24 @@ function Management(props) {
     getList(value);
   };
   const getPlayer = () => {
-    console.log(playerList);
+    // console.log(playerList);
+    console.log(playerList[0]);
+    // console.log(playerList.length);
     setTeam1(playerList[0]);
-    console.log("");
+    // // console.log("");
     setTeam2(playerList[1]);
-    //console.log(playerList[0]);
-    //console.log(playerList[1]);
-    playerList[0].map((elel) =>
-      setTeamValue((pre) => {
-        return [...pre, { label: elel.name, value: elel.player_id }];
-      })
-    );
-    playerList[1].map((elel1) =>
-      setTeamValue2((prev) => {
-        return [...prev, { label: elel1.name, value: elel1.player_id }];
-      })
-    );
+    // // //console.log(playerList[0]);
+    // // //console.log(playerList[1]);
+    // playerList[0].map((elel) =>
+    //   setTeamValue((pre) => {
+    //     return [...pre, { label: elel.name, value: elel.player_id }];
+    //   })
+    // );
+    // playerList[1].map((elel1) =>
+    //   setTeamValue2((prev) => {
+    //     return [...prev, { label: elel1.name, value: elel1.player_id }];
+    //   })
+    // );
     //teamValue;
   };
   const handler = (e) => {
@@ -97,8 +110,8 @@ function Management(props) {
     console.log(e.target.name, e.target.value);
   };
   const selectHandler = (e) => {
+    console.log(e.target);
     alert(e.target.value);
-    console.log(e.target.name);
   };
 
   return (
@@ -122,14 +135,16 @@ function Management(props) {
           </div>
         </div>
 
-        <div className="row">
+        <div>
           {playerList.map((element, index) => (
-            <select key={index} className="m-2">
+            <select key={index} className="m-2" onChange={selectHandler}>
               <option value="" disabled>
                 Player Name
               </option>
-              {element.map((val, index) => (
-                <option key={index}>{val.name} </option>
+              {element.playerList.map((val, index) => (
+                <option key={index} value={val.player_id}>
+                  {val.name + "--" + val.role}{" "}
+                </option>
               ))}
             </select>
           ))}
@@ -139,42 +154,26 @@ function Management(props) {
         Start Match
       </button>
 
-      {/* player list of both team */}
-      <div className=" row m-4 ">
-        <h6>Select Player </h6>
-
-        <MultiSelect
-          className="m-4"
-          options={teamValue}
-          value={selected}
-          onChange={setSelected}
-          labelledBy={"Select"}
-        />
-        <MultiSelect
-          className="m-4"
-          options={teamValue2}
-          value={selected2}
-          onChange={setSelected2}
-          labelledBy={"Select"}
-        />
-      </div>
-      <div>
-        <Form.Group controlId="exampleForm.ControlSelect2">
-          <Form.Label>Example multiple select</Form.Label>
-          <Form.Control
-            as="select"
-            multiple
-            name={cars}
-            onChange={selectHandler}
-          >
-            <option value="Sachin Tendulkar">Sachin Tendulkar</option>
-            <option value="Swami Vivekananda">Swami Vivekananda</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </Form.Control>
-        </Form.Group>
-      </div>
+      <select className="m-2" onChange={selectHandler}>
+        <option value="" disabled>
+          Player Name
+        </option>
+        {team1.playerList
+          ? team1.playerList.map((el, index) => (
+              <option key={index}>{el.name}</option>
+            ))
+          : ""}
+      </select>
+      <select className="m-2" onChange={selectHandler}>
+        <option value="" disabled>
+          Player Name
+        </option>
+        {team2.playerList
+          ? team2.playerList.map((el, index) => (
+              <option key={index}>{el.name}</option>
+            ))
+          : ""}
+      </select>
     </>
   );
 }
